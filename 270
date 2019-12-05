@@ -1,0 +1,63 @@
+#Closest Binary Search Tree Value
+
+
+###题目：
+
+**Given a non-empty binary search tree and a target value, find the value in the BST that is closest to the target.**
+
+Note:
+Given target value is a floating point.
+You are guaranteed to have only one unique value in the BST that is closest to the target.
+
+>Example:
+
+>Input: root = [4,2,5,1,3], target = 3.714286
+
+>    4
+> 
+>    / \
+> 
+>   2   5
+> 
+>  / \
+> 
+> 1   3
+
+>Output: 4
+>
+
+
+
+###问题：
+1， 观察树本身，左孩子比根小，右孩子比根大，所以比较根和target大小就可以确定下一个应该去左边还是右边；
+2， 确定差值的是 Math.abs(target - val) 但是如果两个值是integer.MAX_VALUE/2 就会出现两个相减比最大值大而溢出的情况。针对这个case，对计算差值是进行了除二处理，等小缩小。
+
+~~~
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int closestValue(TreeNode root, double target) {
+        if(root== null) return -1;
+        TreeNode now  = root;
+        double gap = Integer.MAX_VALUE; 
+        int min = root.val;
+        while (now!=null){
+            if(Math.abs(target/2.0- (double)now.val/2.0)< gap ){
+                gap = Math.abs((double)target/2.0- now.val/2.0);
+                min = now.val;
+            }
+            if(target< now.val)
+                now = now.left;
+            else now = now.right;
+        }
+        return min;
+    }
+}
+~~~
