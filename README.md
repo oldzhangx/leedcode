@@ -1,0 +1,2 @@
+# leedcode
+leetcode notebook
