@@ -1,0 +1,52 @@
+#Intersection of Two Arrays II
+
+**问题：**
+
+Given two arrays, write a function to compute their intersection.
+
+>Example 1:
+>
+>Input: nums1 = [1,2,2,1], nums2 = [2,2]
+>
+>Output: [2,2]
+>
+>Example 2:
+>
+>Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+>
+>Output: [4,9]
+>
+***
+
+思路：
+
+1， 用HashMap 存数出现的个数。需要注意的问题就是， HashMap没有contains 可以用getOrDefault 代替；
+
+2， 用用过的数组num[]存结果，可以节省空间；
+
+3， 还有一种思路：先Arrays.sort 两者，然后再移动指针比较，这样可以节省空间
+
+4， Arrays.copyOfRange 建议学一下
+
+~~~
+
+class Solution {
+    public int[] intersect(int[] num1, int[] num2) {
+        if(num1.length> num2.length) return intersect(num2,num1);
+        HashMap<Integer,Integer> map = new HashMap<>();
+        
+        for(int i = 0; i< num1.length;i++){
+            map.put(num1[i],map.getOrDefault(num1[i],0)+1);
+        }
+        int mark = 0;
+        for(int i = 0; i<num2.length;i++){
+            if(map.getOrDefault(num2[i],0)>0){
+                num1[mark++] = num2[i];
+                map.put(num2[i], map.get(num2[i])-1);
+            }
+        }
+        return Arrays.copyOfRange(num1, 0, mark);
+        
+    }
+}
+~~~
